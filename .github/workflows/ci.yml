@@ -84,6 +84,22 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Copy necessary files to server
+        run: |
+          scp -o StrictHostKeyChecking=no \
+            Dockerfile \
+            docker-compose.yml \
+            pyproject.toml \
+            poetry.lock \
+            manage.py \
+            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR_HABIT }}/
+
+          scp -o StrictHostKeyChecking=no -r \
+            config/ \
+            users/ \
+            habits/ \
+            nginx/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR_HABIT }}/
 
       - name: Deploy to Server
         run: |
