@@ -89,9 +89,10 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR_HABIT }}
-          
+            echo '${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}' | docker login -u '${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
+      
             docker-compose down
-            docker system prune -af
+            docker-compose pull
             docker-compose up -d --build
             docker-compose exec web python manage.py migrate --noinput
             docker-compose exec web python manage.py collectstatic --noinput
