@@ -84,21 +84,17 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-      - name: Copy necessary files to server
+      - name: Copy files to server
         run: |
-          scp -o StrictHostKeyChecking=no \
-            Dockerfile \
-            docker-compose.yml \
-            pyproject.toml \
-            poetry.lock \
-            manage.py \
-            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR_HABIT }}/
-
-          scp -o StrictHostKeyChecking=no -r \
-            config/ \
-            users/ \
-            habits/ \
-            nginx/ \
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.env' \
+            --exclude 'venv' \
+            --exclude '__pycache__' \
+            --exclude '*.pyc' \
+            --exclude 'test_db.sqlite3' \
+            ./ \
             ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR_HABIT }}/
 
       - name: Deploy to Server
@@ -108,7 +104,7 @@ jobs:
             echo '${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}' | docker login -u '${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
       
             docker-compose down
-            docker-compose pull
+            docker system prune -af
             docker-compose up -d --build
             docker-compose exec web python manage.py migrate --noinput
             docker-compose exec web python manage.py collectstatic --noinput
