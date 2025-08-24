@@ -95,7 +95,7 @@ jobs:
             --exclude '*.pyc' \
             --exclude 'test_db.sqlite3' \
             ./ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR_HABIT }}/
+            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/var/www/habit_tracker/
 
       - name: Deploy to Server
         run: |
