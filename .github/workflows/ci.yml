@@ -86,6 +86,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_KEY }}
       - name: Copy files to server
         run: |
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
           --include 'pyproject.toml' \
           --include 'poetry.lock' \
           --include 'docker-compose.yml' \
