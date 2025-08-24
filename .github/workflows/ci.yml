@@ -87,6 +87,11 @@ jobs:
       - name: Copy files to server
         run: |
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+            --include 'pyproject.toml' \
+            --include 'poetry.lock' \
+            --include 'docker-compose.yml' \
+            --include 'nginx/' \
+            --include 'nginx/nginx.conf' \
             --exclude '.git' \
             --exclude '.github' \
             --exclude '.env' \
