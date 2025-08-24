@@ -84,16 +84,16 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-#      - name: Copy files to server
-#        run: |
-#          --include 'pyproject.toml' \
-#          --include 'poetry.lock' \
-#          --include 'docker-compose.yml' \
-#          --include 'nginx/' \
-#          --include 'nginx/nginx.conf' \
-#          --exclude '*' \
-#          ./ \
-#          ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/var/www/habit_tracker/
+      - name: Copy files to server
+        run: |
+          --include 'pyproject.toml' \
+          --include 'poetry.lock' \
+          --include 'docker-compose.yml' \
+          --include 'nginx/' \
+          --include 'nginx/nginx.conf' \
+          --exclude '*' \
+          ./ \
+          ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/var/www/habit_tracker/
 
       - name: Deploy to Server
         run: |
