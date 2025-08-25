@@ -32,4 +32,3 @@ def remind_habit():
     except Exception as e:
         logger.error(f"Error in remind_habit task: {e}")
         raise
-

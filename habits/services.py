@@ -5,6 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def send_telegram_message(chat_id, message):
     """Функция отправки сообщения в телеграм"""
 

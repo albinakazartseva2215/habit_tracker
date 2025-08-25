@@ -1,14 +1,8 @@
-from unittest.mock import patch, MagicMock
-
-from django.test import TestCase
-
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from config import settings
 from habits.models import Habit, Place
-from habits.services import send_telegram_message
 from users.models import User
 
 
